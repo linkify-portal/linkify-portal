@@ -1,0 +1,102 @@
+!DOCTYPE html
+html lang=en
+head
+  meta charset=UTF-8
+  titleLinkify – KayCee Internet Servicetitle
+  style
+    body {
+      font-family Arial, sans-serif;
+      background-color #eef2f5;
+      margin 0;
+      padding 40px;
+    }
+    h1, h2 {
+      color #222;
+    }
+    form {
+      background-color #fff;
+      padding 20px;
+      margin-bottom 30px;
+      border-radius 8px;
+      box-shadow 0 0 10px rgba(0,0,0,0.05);
+    }
+    input, button {
+      padding 10px;
+      margin-top 10px;
+      width 100%;
+      max-width 400px;
+      display block;
+      border 1px solid #ccc;
+      border-radius 4px;
+    }
+    button {
+      background-color #0a73ff;
+      color white;
+      cursor pointer;
+    }
+    .response {
+      margin-top 20px;
+      padding 15px;
+      background-color #fff;
+      border-left 4px solid #0a73ff;
+      border-radius 4px;
+      white-space pre-wrap;
+    }
+  style
+head
+body
+  h1KayCee Internet Service – Linkifyh1
+
+  !-- Voucher Creation --
+  h2Create a Voucherh2
+  form id=voucherForm
+    input type=number id=duration placeholder=Duration in minutes required
+    input type=number id=price placeholder=Price (UGX) required
+    button type=submitCreate Voucherbutton
+  form
+
+  !-- Login --
+  h2Log In with Voucherh2
+  form id=loginForm
+    input type=text id=loginUser placeholder=Voucher Username required
+    input type=password id=loginPass placeholder=Voucher Password required
+    button type=submitLog Inbutton
+  form
+
+  div class=response id=outputdiv
+
+  script
+    const output = document.getElementById('output');
+
+    document.getElementById('voucherForm').onsubmit = async (e) = {
+      e.preventDefault();
+      const duration = document.getElementById('duration').value;
+      const price = document.getElementById('price').value;
+
+      const res = await fetch('http127.0.0.15000create_voucher', {
+        method 'POST',
+        headers { 'Content-Type' 'applicationjson' },
+        body JSON.stringify({ duration_minutes duration, price price })
+      });
+
+      const data = await res.json();
+      output.innerHTML = `h3Voucher Createdh3div${JSON.stringify(data, null, 2)}div`;
+    };
+
+    document.getElementById('loginForm').onsubmit = async (e) = {
+      e.preventDefault();
+      const username = document.getElementById('loginUser').value;
+      const password = document.getElementById('loginPass').value;
+
+      const res = await fetch('http127.0.0.15000login', {
+        method 'POST',
+        headers { 'Content-Type' 'applicationjson' },
+        body JSON.stringify({ username, password })
+      });
+
+      const data = await res.json();
+      output.innerHTML = `h3Login Responseh3div${JSON.stringify(data, null, 2)}div`;
+    };
+  script
+body
+html
